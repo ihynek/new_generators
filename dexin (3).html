@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generátor testů – Gymnázium Beroun</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 30px 20px; }
+    .container { background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 960px; width: 100%; padding: 40px; }
+    .header { text-align: center; margin-bottom: 36px; }
+    .header h1 { color: #667eea; font-size: 2.2em; margin-bottom: 8px; }
+    .header p { color: #666; font-size: 1.05em; }
+    .section-title { font-size: 1.2em; font-weight: 700; color: #374151; margin: 28px 0 14px; padding-bottom: 10px; border-bottom: 2px solid #e5e7eb; display: flex; align-items: center; gap: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
+    .card { border-radius: 14px; padding: 22px 18px; transition: all 0.25s ease; border: 2px solid transparent; text-align: center; text-decoration: none; display: block; }
+    .card.bio1 { background: linear-gradient(135deg,#eff6ff,#dbeafe); border-color:#bfdbfe; }
+    .card.bio1:hover { transform:translateY(-4px); box-shadow:0 10px 25px rgba(59,130,246,.25); border-color:#3b82f6; }
+    .card.bio2 { background: linear-gradient(135deg,#f0fdf4,#dcfce7); border-color:#bbf7d0; }
+    .card.bio2:hover { transform:translateY(-4px); box-shadow:0 10px 25px rgba(5,150,105,.25); border-color:#059669; }
+    .card.bio3 { background: linear-gradient(135deg,#fff1f2,#ffe4e6); border-color:#fecdd3; }
+    .card.bio3:hover { transform:translateY(-4px); box-shadow:0 10px 25px rgba(220,38,38,.25); border-color:#dc2626; }
+    .card.che1 { background: linear-gradient(135deg,#fdf4ff,#f3e8ff); border-color:#e9d5ff; }
+    .card.che1:hover { transform:translateY(-4px); box-shadow:0 10px 25px rgba(147,51,234,.25); border-color:#9333ea; }
+    .card.che2 { background: linear-gradient(135deg,#ecfeff,#cffafe); border-color:#a5f3fc; }
+    .card.che2:hover { transform:translateY(-4px); box-shadow:0 10px 25px rgba(8,145,178,.25); border-color:#0891b2; }
+    .card.che3 { background: linear-gradient(135deg,#f5f3ff,#ede9fe); border-color:#ddd6fe; }
+    .card.che3:hover { transform:translateY(-4px); box-shadow:0 10px 25px rgba(124,58,237,.25); border-color:#7c3aed; }
+    .card .icon { font-size:2em; margin-bottom:8px; }
+    .card h2 { font-size:1.15em; color:#1f2937; margin-bottom:5px; }
+    .card .count { font-size:0.82em; color:#6b7280; margin-bottom:8px; }
+    .card .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:0.75em; font-weight:600; }
+    .footer { text-align:center; margin-top:32px; padding-top:18px; border-top:2px solid #e5e7eb; color:#9ca3af; font-size:0.85em; }
+    @media (max-width:640px) { .grid { grid-template-columns:1fr; } .header h1 { font-size:1.6em; } .container { padding:24px; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🏫 Ověřovací testy</h1>
+    <p>Generátor testů pro Gymnázium Joachima Barranda Beroun</p>
+  </div>
+  <div class="section-title">🔬 Biologie <span style="font-size:0.8em;font-weight:400;color:#9ca3af;margin-left:8px">celkem 509 otázek</span></div>
+  <div class="grid">
+    <a class="card bio1" href="biologie_1r.html">
+      <div class="icon">🧬</div><h2>1. ročník</h2>
+      <div class="count">148 otázek · 17 okruhů</div>
+      
+    </a>
+    <a class="card bio2" href="biologie_2r.html">
+      <div class="icon">🦠</div><h2>2. ročník</h2>
+      <div class="count">149 otázek · 5 okruhů</div>
+      
+    </a>
+    <a class="card bio3" href="biologie_3r.html">
+      <div class="icon">🫀</div><h2>3. ročník</h2>
+      <div class="count">212 otázek · 12 okruhů</div>
+      
+    </a>
+  </div>
+  <div class="section-title">⚗️ Chemie <span style="font-size:0.8em;font-weight:400;color:#9ca3af;margin-left:8px">celkem 262 otázek</span></div>
+  <div class="grid">
+    <a class="card che1" href="chemie_1r.html">
+      <div class="icon">⚗️</div><h2>1. ročník</h2>
+      <div class="count">90 otázek · 13 okruhů</div>
+      
+    </a>
+    <a class="card che2" href="chemie_2r.html">
+      <div class="icon">🧪</div><h2>2. ročník</h2>
+      <div class="count">85 otázek · 14 okruhů</div>
+      
+    </a>
+    <a class="card che3" href="chemie_3r.html">
+      <div class="icon">⚛️</div><h2>3. ročník</h2>
+      <div class="count">87 otázek · 11 okruhů</div>
+      
+    </a>
+  </div>
+  <div class="footer">Gymnázium Joachima Barranda Beroun</div>
+</div>
+</body>
+</html>
