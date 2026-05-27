@@ -280,9 +280,9 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
 .sCard select,.sCard input{width:100%;padding:11px;font-size:15px;border:2px solid #d1d5db;border-radius:8px;margin-bottom:14px;background:white}
 .lbl{text-align:left;display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:5px}
 #scTest{display:none}
-.tH{background:linear-gradient(135deg,#9333ea,#7c3aed);color:white;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2);position:sticky;top:0;z-index:100;}
+.tH{background:linear-gradient(135deg,#9333ea,#7c3aed);color:white;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;box-shadow:0 2px 10px rgba(0,0,0,.2);}
 .tH h2{font-size:17px}.tMeta{font-size:12px;opacity:.9}
-.pB{height:4px;background:#e5e7eb;position:sticky;top:60px;z-index:99}.pF{height:100%;background:#10b981;transition:width .3s;width:0}
+.pB{height:4px;background:#e5e7eb;}.pF{height:100%;background:#10b981;transition:width .3s;width:0}
 .tBod{max-width:860px;margin:0 auto;padding:22px}
 .qC{background:white;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:14px;overflow:hidden;border-left:4px solid #9333ea}
 .qC.done{border-left-color:#10b981}
@@ -298,12 +298,12 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
 .bB{background:linear-gradient(to right,#9333ea,#7c3aed);color:white}
 .bG{background:linear-gradient(to right,#10b981,#059669);color:white}
 .bGr{background:#6b7280;color:white}
-.tmrWrap{position:sticky;top:64px;z-index:98;padding:0 0 4px}
-.tmr{display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(0,0,0,0.18);border-radius:8px}
-.tmr-bar{flex:1;height:10px;background:rgba(255,255,255,0.25);border-radius:5px;overflow:hidden}
-.tmr-fill{height:100%;background:#fde047;border-radius:5px;transition:width 1s linear}
+.tmrWrap{}
+.tmr{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#1e3a5f;}
+.tmr-bar{flex:1;height:14px;background:rgba(255,255,255,0.2);border-radius:7px;overflow:hidden}
+.tmr-fill{height:100%;background:#fde047;border-radius:7px;transition:width 1s linear}
 .tmr-fill.red{background:#f87171}
-.tmr-txt{font-size:16px;font-weight:700;color:#fde047;min-width:50px;text-align:right}
+.tmr-txt{font-size:18px;font-weight:700;color:#fde047;min-width:55px;text-align:right;font-family:monospace}
 .tmr-txt.red{color:#f87171}
 @media(max-width:600px){
   .sCard{padding:24px 18px}
@@ -335,12 +335,12 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
   </div>
 </div></div>
 <div id="scTest">
-  <div class="tH">
+  <div style="position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)"><div class="tH">
     <div><h2>⚗️ TEST — CHEMIE — 1. ROČNÍK</h2><div class="tMeta" id="tMeta"></div></div>
     <button class="btn bGr" onclick="submitTest()">Odevzdat →</button>
   </div>
   <div class="pB"><div class="pF" id="pF"></div></div>
-<div class="tmrWrap"><div class="tmr" id="tmrBox"><div class="tmr-bar"><div class="tmr-fill" id="tmrFill"></div></div><div class="tmr-txt" id="tmrTxt">--:--</div></div></div>
+<div class="tmrWrap"><div class="tmr" id="tmrBox"><div class="tmr-bar"><div class="tmr-fill" id="tmrFill"></div></div><div class="tmr-txt" id="tmrTxt">--:--</div></div></div></div>
   
   <div class="tBod" id="tBod"></div>
   <div style="max-width:860px;margin:0 auto;padding:0 22px 30px;text-align:right">
