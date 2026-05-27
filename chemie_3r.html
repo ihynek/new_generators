@@ -290,12 +290,13 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
 .bB{background:linear-gradient(to right,#7c3aed,#6d28d9);color:white}
 .bG{background:linear-gradient(to right,#10b981,#059669);color:white}
 .bGr{background:#6b7280;color:white}
-.tmr{display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(255,255,255,0.15);border-radius:8px;margin-top:6px}
-.tmr-bar{flex:1;height:8px;background:rgba(255,255,255,0.25);border-radius:4px;overflow:hidden}
-.tmr-fill{height:100%;background:white;border-radius:4px;transition:width 1s linear}
-.tmr-fill.red{background:#fca5a5}
-.tmr-txt{font-size:15px;font-weight:700;color:white;min-width:45px;text-align:right}
-.tmr-txt.red{color:#fca5a5}
+.tmrWrap{position:sticky;top:0;z-index:100;background:inherit;padding:4px 0 6px}
+.tmr{display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(0,0,0,0.18);border-radius:8px}
+.tmr-bar{flex:1;height:10px;background:rgba(255,255,255,0.25);border-radius:5px;overflow:hidden}
+.tmr-fill{height:100%;background:#fde047;border-radius:5px;transition:width 1s linear}
+.tmr-fill.red{background:#f87171}
+.tmr-txt{font-size:16px;font-weight:700;color:#fde047;min-width:50px;text-align:right}
+.tmr-txt.red{color:#f87171}
 @media(max-width:600px){
   .sCard{padding:24px 18px}
   .sCard h1{font-size:17px}
@@ -331,7 +332,7 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
     <button class="btn bGr" onclick="submitTest()">Odevzdat →</button>
   </div>
   <div class="pB"><div class="pF" id="pF"></div></div>
-  <div class="tmr" id="tmrBox"><div class="tmr-bar"><div class="tmr-fill" id="tmrFill"></div></div><div class="tmr-txt" id="tmrTxt">--:--</div></div>
+  <div class="tmrWrap"><div class="tmr" id="tmrBox"><div class="tmr-bar"><div class="tmr-fill" id="tmrFill"></div></div><div class="tmr-txt" id="tmrTxt">--:--</div></div></div>
   <div class="tBod" id="tBod"></div>
   <div style="max-width:860px;margin:0 auto;padding:0 22px 30px;text-align:right">
     <button class="btn bG" onclick="submitTest()">✅ Odevzdat test</button>
