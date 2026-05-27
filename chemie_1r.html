@@ -336,7 +336,7 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
 </div></div>
 <div id="scTest">
   <div style="position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)"><div class="tH">
-    <div><h2>⚗️ TEST — CHEMIE — 1. ROČNÍK</h2><div class="tMeta" id="tMeta"></div></div>
+    <div><h2>⚗️ TEST — CHEMIE — 1. ROČNÍK</h2><div class="tMeta" id="tMeta"></div><div style="font-size:11px;opacity:0.8;margin-top:4px">⚠️ Po vypršení času se test automaticky odešle</div></div>
     <button class="btn bGr" onclick="submitTest()">Odevzdat →</button>
   </div>
   <div class="pB"><div class="pF" id="pF"></div></div>
@@ -430,8 +430,6 @@ function upd(){
   }
 function submitTest(){
   if(timerInterval)clearInterval(timerInterval);
-  const ua=cv.filter((_,i)=>{const e=document.getElementById('a'+i);return!e||!e.value.trim();}).length;
-  if(ua>0&&!confirm('Máš '+ua+' nezodpovězených otázek. Opravdu odevzdat?'))return;
   curAns=cv.map((item,i)=>{
     return{q:item.q,sec:item.section,sA:(document.getElementById('a'+i)||{value:''}).value.trim(),cA:item.a};
   });
