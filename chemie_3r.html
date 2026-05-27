@@ -64,6 +64,7 @@
   </div>
   <div class="row">
     <div class="fg"><label>Otázek na test:</label><input type="number" id="qc" value="20" min="1" max="60"></div>
+    <div class="fg"><label>Čas na test (min):</label><input type="number" id="tmin" value="15" min="1" max="90"></div>
     <div class="fg">
       <label>&#128274; PIN pro učitele (zapiš si ho!):</label>
       <input type="number" id="pin" value="1234" min="1000" max="9999" placeholder="4 číslice"
@@ -179,7 +180,8 @@
     if (qc<1) { showWarn('Zadej počet otázek.'); return null; }
     hideWarn();
     const pin=parseInt(document.getElementById('pin').value)||1234;
-    return {cls, sc:parseInt(document.getElementById('sc').value)||2, td:document.getElementById('td').value, qc, secs, pin};
+    const tmin=parseInt(document.getElementById('tmin').value)||15;
+    return {cls, sc:parseInt(document.getElementById('sc').value)||2, td:document.getElementById('td').value, qc, secs, pin, tmin};
   }
 
   function showWarn(m) { document.getElementById('warnBox').textContent=m; document.getElementById('warnBox').style.display=''; }
@@ -288,6 +290,12 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
 .bB{background:linear-gradient(to right,#7c3aed,#6d28d9);color:white}
 .bG{background:linear-gradient(to right,#10b981,#059669);color:white}
 .bGr{background:#6b7280;color:white}
+.tmr{display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(255,255,255,0.15);border-radius:8px;margin-top:6px}
+.tmr-bar{flex:1;height:8px;background:rgba(255,255,255,0.25);border-radius:4px;overflow:hidden}
+.tmr-fill{height:100%;background:white;border-radius:4px;transition:width 1s linear}
+.tmr-fill.red{background:#fca5a5}
+.tmr-txt{font-size:15px;font-weight:700;color:white;min-width:45px;text-align:right}
+.tmr-txt.red{color:#fca5a5}
 @media(max-width:600px){
   .sCard{padding:24px 18px}
   .sCard h1{font-size:17px}
@@ -323,6 +331,7 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
     <button class="btn bGr" onclick="submitTest()">Odevzdat →</button>
   </div>
   <div class="pB"><div class="pF" id="pF"></div></div>
+  <div class="tmr" id="tmrBox"><div class="tmr-bar"><div class="tmr-fill" id="tmrFill"></div></div><div class="tmr-txt" id="tmrTxt">--:--</div></div>
   <div class="tBod" id="tBod"></div>
   <div style="max-width:860px;margin:0 auto;padding:0 22px 30px;text-align:right">
     <button class="btn bG" onclick="submitTest()">✅ Odevzdat test</button>
@@ -344,7 +353,7 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
 
     const js = `
 const allV=${varJSON};
-const mPts=${p.qc},pPQ=1;
+const mPts=${p.qc},pPQ=1,TMIN=${p.tmin};
 const TB64="${TEACHER_B64}";
 const PIN=${p.pin};
 let cv=null,sN='',sVar='',curAns=[];
@@ -363,7 +372,7 @@ function startTest(){
   document.getElementById('tMeta').textContent=sN+' | '+sVar+' | ${p.cls} | ${p.td}';
   renderTest();
   document.getElementById('scSel').style.display='none';
-  document.getElementById('scTest').style.display='block';
+  document.getElementById('scTest').style.display='block';startTimer();
   window.scrollTo(0,0);
 }
 
@@ -388,7 +397,29 @@ function upd(){
   document.getElementById('pF').style.width=Math.round(f/cv.length*100)+'%';
 }
 
+
+  var timerInterval=null;
+  function startTimer(){
+    var total=TMIN*60;
+    var remaining=total;
+    function tick(){
+      remaining--;
+      if(remaining<0){clearInterval(timerInterval);submitTest();return;}
+      var m=Math.floor(remaining/60);
+      var s=remaining%60;
+      var txt=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+      var pct=Math.round(remaining/total*100);
+      var isRed=remaining<120;
+      var fill=document.getElementById('tmrFill');
+      var tmrTxt=document.getElementById('tmrTxt');
+      if(fill){fill.style.width=pct+'%';fill.className='tmr-fill'+(isRed?' red':'');}
+      if(tmrTxt){tmrTxt.textContent=txt;tmrTxt.className='tmr-txt'+(isRed?' red':'');}
+    }
+    tick();
+    timerInterval=setInterval(tick,1000);
+  }
 function submitTest(){
+  if(timerInterval)clearInterval(timerInterval);
   const ua=cv.filter((_,i)=>{const e=document.getElementById('a'+i);return!e||!e.value.trim();}).length;
   if(ua>0&&!confirm('Máš '+ua+' nezodpovězených otázek. Opravdu odevzdat?'))return;
   curAns=cv.map((item,i)=>{
@@ -434,6 +465,7 @@ function openTeacherFile(){
       .replaceAll('${p.td}', p.td)
       .replaceAll('${p.qc}', p.qc)
       .replaceAll('${p.pin}', p.pin)
+      .replaceAll('${p.tmin}', p.tmin)
 
 
     return '<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8">'
