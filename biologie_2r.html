@@ -248,7 +248,7 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
 .sCard select,.sCard input{width:100%;padding:11px;font-size:15px;border:2px solid #d1d5db;border-radius:8px;margin-bottom:14px;background:white}
 .lbl{text-align:left;display:block;font-size:13px;font-weight:600;color:#374151;margin-bottom:5px}
 #scTest{display:none}
-.tH{background:linear-gradient(135deg,#059669,#047857);color:white;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.tH{background:linear-gradient(135deg,#059669,#047857);color:white;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
 .tH h2{font-size:17px}.tMeta{font-size:12px;opacity:.9}
 .pB{height:4px;background:#e5e7eb}.pF{height:100%;background:#10b981;transition:width .3s;width:0}
 .tBod{max-width:860px;margin:0 auto;padding:22px}
@@ -266,7 +266,7 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
 .bB{background:linear-gradient(to right,#059669,#047857);color:white}
 .bG{background:linear-gradient(to right,#10b981,#059669);color:white}
 .bGr{background:#6b7280;color:white}
-.tmrWrap{position:sticky;top:64px;z-index:98}
+.tmrWrap{}
 .tmr{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#1e3a5f}
 .tmr-bar{flex:1;height:14px;background:rgba(255,255,255,0.2);border-radius:7px;overflow:hidden}
 .tmr-fill{height:100%;background:#fde047;border-radius:7px;transition:width 1s linear}
@@ -303,12 +303,12 @@ h1{text-align:center;font-size:13pt;margin:4px 0}
   </div>
 </div></div>
 <div id="scTest">
-  <div class="tH">
+  <div style="position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)"><div class="tH">
     <div><h2>🦠 TEST — BIOLOGIE — 2. ROČNÍK</h2><div class="tMeta" id="tMeta"></div><div style="font-size:11px;opacity:0.8;margin-top:4px">⚠️ Po vypršení času se test automaticky odešle</div></div>
     <button class="btn bGr" onclick="submitTest()">Odevzdat →</button>
   </div>
   <div class="pB"><div class="pF" id="pF"></div></div>
-<div class="tmrWrap"><div class="tmr" id="tmrBox"><div class="tmr-bar"><div class="tmr-fill" id="tmrFill"></div></div><div class="tmr-txt" id="tmrTxt">--:--</div></div></div>
+<div class="tmrWrap"><div class="tmr" id="tmrBox"><div class="tmr-bar"><div class="tmr-fill" id="tmrFill"></div></div><div class="tmr-txt" id="tmrTxt">--:--</div></div></div></div>
   <div class="tBod" id="tBod"></div>
   <div style="max-width:860px;margin:0 auto;padding:0 22px 30px;text-align:right">
     <button class="btn bG" onclick="submitTest()">✅ Odevzdat test</button>
