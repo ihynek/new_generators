@@ -370,7 +370,8 @@ function startTest(){
   if(!sN){err.textContent='Zadej prosím své jméno.';err.style.display='block';ne.focus();return;}
   if(isNaN(vi)){err.textContent='Vyber variantu.';err.style.display='block';return;}
   err.style.display='none';
-  cv=allV[vi];
+  cv=allV[vi].slice();
+  for(var _i=cv.length-1;_i>0;_i--){var _j=Math.floor(Math.random()*(_i+1));var _t=cv[_i];cv[_i]=cv[_j];cv[_j]=_t;}
   const L='ABCDEFGHIJKLMNOPQRSTUVWXYZ';sVar='Varianta '+(L[vi]||vi+1);
   document.getElementById('tMeta').textContent=sN+' | '+sVar+' | ${p.cls} | ${p.td}';
   renderTest();
