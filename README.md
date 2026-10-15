@@ -11,7 +11,7 @@ Rozcestník: (https://ihynek.github.io/new_generators/dexin.html)
 | Předmět | Ročník | Otázek | Okruhů |
 |---------|--------|--------|--------|
 | Biologie | 1. ročník | 148 | 17 |
-| Biologie | 2. ročník | 149 | 5 |
+| Biologie | 2. ročník | 174 | 6 |
 | Biologie | 3. ročník | 212 | 12 |
 | Chemie | 1. ročník | 90 | 13 |
 | Chemie | 2. ročník | 85 | 14 |
