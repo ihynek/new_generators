@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hromadné hodnocení testů</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:30px 16px;color:#1f2937}
+.wrap{background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);max-width:1100px;margin:0 auto;padding:32px}
+h1{color:#667eea;font-size:1.9em;margin-bottom:6px}
+.sub{color:#6b7280;margin-bottom:22px;font-size:14px;line-height:1.6}
+.step{font-weight:700;color:#374151;margin:20px 0 10px;font-size:15px}
+.drop{border:3px dashed #c7d2fe;border-radius:14px;padding:30px;text-align:center;cursor:pointer;background:#f8fafc;transition:.2s}
+.drop:hover,.drop.over{border-color:#6366f1;background:#eef2ff}
+.drop .ic{font-size:40px}
+.drop p{font-weight:600;margin-top:6px}
+.drop small{color:#6b7280}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input[type=password],input[type=text]{padding:10px 12px;border:2px solid #d1d5db;border-radius:8px;font-size:14px;flex:1;min-width:220px}
+.btn{padding:11px 20px;border-radius:8px;font-size:14px;font-weight:600;border:none;cursor:pointer;color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.b1{background:linear-gradient(to right,#6366f1,#8b5cf6)}
+.b2{background:linear-gradient(to right,#10b981,#059669)}
+.b3{background:#6b7280}
+.b4{background:none;color:#dc2626;padding:6px 8px;font-size:13px}
+.info{font-size:13px;color:#374151;margin-top:10px}
+.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:8px;padding:10px 14px;font-size:13px;margin-top:10px}
+.prog{height:10px;background:#e5e7eb;border-radius:6px;overflow:hidden;margin-top:12px;display:none}
+.prog div{height:100%;width:0;background:linear-gradient(to right,#6366f1,#8b5cf6);transition:width .3s}
+table{width:100%;border-collapse:collapse;margin-top:16px;font-size:14px}
+th{background:#f1f5f9;text-align:left;padding:9px 10px;font-size:12px;color:#475569;text-transform:uppercase;letter-spacing:.03em}
+td{padding:9px 10px;border-bottom:1px solid #e5e7eb;vertical-align:top}
+tr.main{cursor:pointer}
+tr.main:hover{background:#f8fafc}
+.st{font-size:12px;padding:2px 8px;border-radius:12px;font-weight:600;white-space:nowrap}
+.s0{background:#f1f5f9;color:#64748b}.s1{background:#eef2ff;color:#4f46e5}.s2{background:#dcfce7;color:#166534}.s3{background:#fee2e2;color:#991b1b}
+.g{font-weight:700;font-size:16px}
+.g1{color:#16a34a}.g2{color:#2563eb}.g3{color:#d97706}.g4{color:#ea580c}.g5{color:#dc2626}
+.det{background:#fafafa}
+.q{padding:8px 0;border-bottom:1px dashed #e5e7eb;font-size:13px}
+.q:last-child{border-bottom:none}
+.q b{color:#1f2937}
+.sa{color:#92400e;margin-top:3px}.ca{color:#065f46;margin-top:2px}
+.q input{width:52px;padding:3px 6px;border:2px solid #d1d5db;border-radius:6px;text-align:center;font-size:14px;margin-left:6px}
+.sumbox{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.sumbox div{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:10px 14px;font-size:13px}
+.sumbox strong{font-size:18px;color:#4f46e5;display:block}
+.scale{font-size:12px;color:#6b7280;margin-top:8px}
+@media print{body{background:#fff;padding:0}.wrap{box-shadow:none;padding:0}.noprint{display:none!important}tr.det{display:none!important}}
+@media (max-width:640px){.wrap{padding:18px}table{font-size:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>📊 Hromadné hodnocení testů</h1>
+<p class="sub">Načti hodnotící soubory (<code>hodnoceni_*.html</code>) z disku W:// – klidně všech tří tříd najednou. AI je ohodnotí stejně jako tlačítko v jednotlivém souboru (0/1/2 body za otázku). Body můžeš po rozkliknutí studenta ručně upravit a výsledky stáhnout jako tabulku do Excelu.</p>
+
+<div class="noprint">
+<div class="step">① Soubory studentů</div>
+<div class="drop" id="drop">
+  <div class="ic">📂</div>
+  <p>Přetáhni sem hodnotící soubory</p>
+  <small>nebo klikni a vyber je (ve složce Ctrl+A vybere všechny)</small>
+  <input type="file" id="fi" multiple accept=".html,.htm" style="display:none">
+</div>
+<div class="info" id="finfo"></div>
+<div id="fwarn"></div>
+
+<div class="step">② API klíč</div>
+<div class="row">
+  <input type="password" id="key" placeholder="sk-ant-api03-…" autocomplete="off">
+  <label style="font-size:13px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="rem" checked> zapamatovat v tomto prohlížeči</label>
+</div>
+
+<div class="step">③ Hodnocení</div>
+<div class="row">
+  <button class="btn b1" id="go" disabled>🤖 Ohodnotit všechny</button>
+  <button class="btn b2" id="csv" disabled>📥 Stáhnout tabulku (Excel)</button>
+  <button class="btn b3" id="prt" disabled>🖨️ Tisk přehledu</button>
+  <button class="btn b4" id="clr">Vymazat vše</button>
+</div>
+<div class="prog" id="prog"><div id="pf"></div></div>
+<div class="info" id="pinfo"></div>
+</div>
+
+<div id="sum" class="sumbox"></div>
+<table id="tab" style="display:none">
+<thead><tr><th>#</th><th>Student</th><th>Třída</th><th>Datum</th><th>Body</th><th>%</th><th>Známka</th><th class="noprint">Stav</th></tr></thead>
+<tbody id="tb"></tbody>
+</table>
+<p class="scale">Stupnice: 1 = 90–100 % · 2 = 75–89 % · 3 = 60–74 % · 4 = 45–59 % · 5 = 0–44 % (stejná jako v hodnotícím souboru). Max. 2 body za otázku.</p>
+</div>
+
+<script>
+(function(){
+var MODEL='claude-haiku-4-5-20251001';
+var MAXQ=2;
+var S=[];            // students
+var open={};         // expanded rows
+var busy=false;
+
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function lsDel(k){try{localStorage.removeItem(k)}catch(e){}}
+var keyEl=document.getElementById('key');
+keyEl.value=lsGet('anthApiKey')||'';
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function gradeOf(p){return p>=90?1:p>=75?2:p>=60?3:p>=45?4:5}
+
+// ---------- načtení souborů ----------
+var drop=document.getElementById('drop'),fi=document.getElementById('fi');
+drop.onclick=function(){fi.click()};
+drop.ondragover=function(e){e.preventDefault();drop.classList.add('over')};
+drop.ondragleave=function(){drop.classList.remove('over')};
+drop.ondrop=function(e){e.preventDefault();drop.classList.remove('over');load(e.dataTransfer.files)};
+fi.onchange=function(){load(fi.files);fi.value=''};
+
+function parseFile(text){
+  var doc=new DOMParser().parseFromString(text,'text/html');
+  var el=doc.getElementById('D');
+  if(!el)return null;
+  try{var d=JSON.parse(el.textContent);}catch(e){return null}
+  if(!d||!Array.isArray(d.ans))return null;
+  return d;
+}
+
+function load(files){
+  var arr=Array.from(files||[]);if(!arr.length)return;
+  var bad=[],dup=[];
+  Promise.all(arr.map(function(f){
+    return f.text().then(function(t){return{f:f,d:parseFile(t)}});
+  })).then(function(res){
+    res.forEach(function(r){
+      if(!r.d){bad.push(r.f.name);return;}
+      var d=r.d;
+      var id=(d.sN||'')+'|'+(d.className||'')+'|'+(d.testDate||'')+'|'+d.ans.length+'|'+(d.ans[0]&&d.ans[0].q);
+      if(S.some(function(s){return s.id===id})){dup.push(r.f.name);return;}
+      S.push({id:id,file:r.f.name,name:d.sN||r.f.name,cls:d.className||'',date:d.testDate||'',title:d.title||'',
+        ans:d.ans,pts:d.ans.map(function(){return null}),status:0,err:''});
+    });
+    S.sort(function(a,b){return a.cls.localeCompare(b.cls,'cs')||a.name.localeCompare(b.name,'cs')});
+    var w='';
+    if(bad.length)w+='<div class="warn">⚠️ Nejde o hodnotící soubor (přeskočeno): '+esc(bad.join(', '))+'</div>';
+    if(dup.length)w+='<div class="warn">ℹ️ Už načteno (přeskočeno): '+esc(dup.join(', '))+'</div>';
+    var names={};S.forEach(function(s){var k=s.name.trim().toLowerCase()+'|'+s.cls;names[k]=(names[k]||0)+1});
+    var twice=Object.keys(names).filter(function(k){return names[k]>1}).map(function(k){return k.split('|')[0]});
+    if(twice.length)w+='<div class="warn">⚠️ Stejné jméno víckrát (dva různé testy?): '+esc(twice.join(', '))+'</div>';
+    document.getElementById('fwarn').innerHTML=w;
+    render();
+  });
+}
+
+// ---------- výpočty ----------
+function calc(s){
+  var t=0,mx=s.ans.length*MAXQ;
+  s.pts.forEach(function(p){t+=p||0});
+  var pct=mx?Math.round(t/mx*100):0;
+  return{t:t,mx:mx,pct:pct,g:gradeOf(pct)};
+}
+
+// ---------- vykreslení ----------
+function render(){
+  var tb=document.getElementById('tb');
+  document.getElementById('tab').style.display=S.length?'':'none';
+  var cls={};S.forEach(function(s){cls[s.cls]=(cls[s.cls]||0)+1});
+  document.getElementById('finfo').textContent=S.length?('Načteno '+S.length+' souborů · '+Object.keys(cls).map(function(c){return(c||'bez třídy')+': '+cls[c]}).join(' · ')):'';
+  var html='';
+  S.forEach(function(s,i){
+    var done=s.status===2,c=calc(s);
+    var st=['<span class="st s0">čeká</span>','<span class="st s1">hodnotím…</span>','<span class="st s2">✓ hotovo</span>','<span class="st s3" title="'+esc(s.err)+'">✗ chyba</span>'][s.status];
+    html+='<tr class="main" data-i="'+i+'"><td>'+(i+1)+'</td><td><b>'+esc(s.name)+'</b></td><td>'+esc(s.cls)+'</td><td>'+esc(s.date)+'</td>'
+      +'<td>'+(done?c.t+' / '+c.mx:'–')+'</td><td>'+(done?c.pct+' %':'–')+'</td>'
+      +'<td>'+(done?'<span class="g g'+c.g+'">'+c.g+'</span>':'–')+'</td><td class="noprint">'+st+'</td></tr>';
+    if(open[i]){
+      html+='<tr class="det"><td></td><td colspan="7">';
+      if(s.status===3)html+='<div class="warn">Chyba: '+esc(s.err)+'</div>';
+      s.ans.forEach(function(a,j){
+        html+='<div class="q"><b>'+(j+1)+'. '+esc(a.q)+'</b>'
+          +'<span style="float:right">body:<input type="number" min="0" max="'+MAXQ+'" data-i="'+i+'" data-j="'+j+'" value="'+(s.pts[j]==null?'':s.pts[j])+'"> / '+MAXQ+'</span>'
+          +'<div class="sa">Student: '+(a.sA?esc(a.sA):'<em>bez odpovědi</em>')+'</div>'
+          +'<div class="ca">Vzor: '+esc(a.cA)+'</div></div>';
+      });
+      html+='</td></tr>';
+    }
+  });
+  tb.innerHTML=html;
+  summary();
+  var any=S.some(function(s){return s.status===2});
+  document.getElementById('go').disabled=busy||!S.some(function(s){return s.status!==2});
+  document.getElementById('csv').disabled=!any;
+  document.getElementById('prt').disabled=!any;
+  document.getElementById('go').textContent=S.some(function(s){return s.status===2})&&S.some(function(s){return s.status!==2})?'🤖 Ohodnotit zbývající':'🤖 Ohodnotit všechny';
+}
+
+function summary(){
+  var by={};S.forEach(function(s){if(s.status!==2)return;var c=calc(s);(by[s.cls]=by[s.cls]||[]).push(c)});
+  var h='';
+  Object.keys(by).sort().forEach(function(k){
+    var a=by[k],avg=Math.round(a.reduce(function(x,c){return x+c.pct},0)/a.length);
+    var ag=(a.reduce(function(x,c){return x+c.g},0)/a.length).toFixed(2).replace('.',',');
+    h+='<div>'+esc(k||'bez třídy')+' ('+a.length+' st.)<strong>'+avg+' % · Ø '+ag+'</strong></div>';
+  });
+  document.getElementById('sum').innerHTML=h;
+}
+
+document.getElementById('tb').addEventListener('click',function(e){
+  var tr=e.target.closest('tr.main');if(!tr)return;
+  var i=+tr.dataset.i;open[i]=!open[i];render();
+});
+document.getElementById('tb').addEventListener('change',function(e){
+  var t=e.target;if(t.tagName!=='INPUT')return;
+  var s=S[+t.dataset.i],j=+t.dataset.j;
+  var v=t.value===''?null:Math.max(0,Math.min(MAXQ,Math.round(+t.value||0)));
+  s.pts[j]=v;
+  if(s.pts.every(function(p){return p!=null})){s.status=2;s.err='';}
+  render();
+});
+
+// ---------- AI ----------
+function prompt(ans){
+  var L=['Jsi benevolentní učitel a hodnotíš písemný test. Pravidla hodnocení:',
+  '2 body = odpověď je věcně správná, i když je vyjádřena jinak než vzor nebo neúplnou větou',
+  '1 bod = odpověď je částečně správná, zachycuje hlavní myšlenku ale chybí detail, nebo je vyjádření nepřesné',
+  '0 bodů = odpověď chybí, je prázdná, nebo je věcně zcela špatná',
+  'Při pochybnostech vždy zaokrouhli NAHORU - buď benevolentní.',
+  'Odpověz POUZE jako JSON pole čísel, např. [2,1,0,2,1,...] - tolik čísel kolik je otázek. Nic jiného nepíš.',''];
+  ans.forEach(function(a,i){
+    L.push((i+1)+'. Otázka: '+a.q);
+    L.push('   Vzorová odpověď: '+a.cA);
+    L.push('   Odpověď studenta: '+(a.sA||'(bez odpovědi)'));
+    L.push('');
+  });
+  return L.join('\n');
+}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+
+async function gradeOne(s,key){
+  for(var attempt=0;attempt<3;attempt++){
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{
+      'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:MODEL,max_tokens:500,messages:[{role:'user',content:prompt(s.ans)}]})});
+    if(resp.status===429||resp.status===529||resp.status>=500){await sleep(4000*(attempt+1));continue;}
+    var data=await resp.json();
+    if(data.error)throw new Error(data.error.message||'chyba API');
+    var text=(data.content&&data.content[0]&&data.content[0].text||'').trim();
+    var m=text.match(/\[([\d,\s]+)\]/);
+    if(!m)throw new Error('Neočekávaná odpověď AI: '+text.slice(0,80));
+    var sc=JSON.parse(m[0]);
+    if(sc.length!==s.ans.length)throw new Error('AI vrátila '+sc.length+' čísel místo '+s.ans.length);
+    return sc.map(function(x){return Math.max(0,Math.min(MAXQ,Math.round(x)))});
+  }
+  throw new Error('API je přetížené, zkus to za chvíli znovu');
+}
+
+document.getElementById('go').onclick=async function(){
+  var key=keyEl.value.trim();
+  if(!key){alert('Zadej API klíč.');keyEl.focus();return;}
+  if(document.getElementById('rem').checked)lsSet('anthApiKey',key);else lsDel('anthApiKey');
+  var todo=S.filter(function(s){return s.status!==2});
+  if(!todo.length)return;
+  busy=true;var done=0,fail=0;
+  var prog=document.getElementById('prog'),pf=document.getElementById('pf'),pi=document.getElementById('pinfo');
+  prog.style.display='block';pf.style.width='0';
+  var queue=todo.slice(),authFail=false;
+  async function worker(){
+    while(queue.length&&!authFail){
+      var s=queue.shift();s.status=1;render();
+      try{s.pts=await gradeOne(s,key);s.status=2;s.err='';}
+      catch(e){s.status=3;s.err=e.message;fail++;
+        if(/api.key|authentication|x-api-key|invalid/i.test(e.message))authFail=true;}
+      done++;pf.style.width=Math.round(done/todo.length*100)+'%';
+      pi.textContent='Ohodnoceno '+done+' z '+todo.length+(fail?' · chyby: '+fail:'');
+      render();
+    }
+  }
+  await Promise.all([worker(),worker(),worker()]);
+  busy=false;
+  if(authFail)pi.textContent='Neplatný API klíč – zkontroluj ho a spusť znovu.';
+  else pi.textContent='Hotovo: '+(done-fail)+' ohodnoceno'+(fail?', '+fail+' s chybou (klikni na řádek, nebo spusť znovu)':'')+'. Rozklikni studenta pro kontrolu bodů.';
+  S.forEach(function(s){if(s.status===1)s.status=0});
+  render();
+};
+
+// ---------- export ----------
+document.getElementById('csv').onclick=function(){
+  var nq=Math.max.apply(null,S.map(function(s){return s.ans.length}));
+  var head=['Třída','Student','Datum','Body','Max','Procenta','Známka'];
+  for(var k=1;k<=nq;k++)head.push('O'+k);
+  var rows=[head];
+  S.filter(function(s){return s.status===2}).forEach(function(s){
+    var c=calc(s);
+    rows.push([s.cls,s.name,s.date,c.t,c.mx,c.pct,c.g].concat(s.pts));
+  });
+  var csv='\ufeff'+rows.map(function(r){return r.map(function(v){v=String(v==null?'':v);return /[;"\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(';')}).join('\r\n');
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  var t=S[0]&&S[0].date||new Date().toISOString().slice(0,10);
+  a.download='vysledky_'+t+'.csv';document.body.appendChild(a);a.click();a.remove();
+};
+document.getElementById('prt').onclick=function(){window.print()};
+document.getElementById('clr').onclick=function(){
+  if(busy)return;if(S.length&&!confirm('Vymazat všechny načtené soubory a výsledky?'))return;
+  S=[];open={};document.getElementById('fwarn').innerHTML='';document.getElementById('pinfo').textContent='';
+  document.getElementById('prog').style.display='none';render();
+};
+render();
+})();
+</script>
+</body>
+</html>

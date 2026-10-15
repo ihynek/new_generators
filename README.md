@@ -16,3 +16,7 @@ Rozcestník: (https://ihynek.github.io/new_generators/dexin.html)
 | Chemie | 1. ročník | 90 | 13 |
 | Chemie | 2. ročník | 85 | 14 |
 | Chemie | 3. ročník | 87 | 11 |
+
+## Hodnocení online testů
+
+[Hromadné hodnocení](https://ihynek.github.io/new_generators/hodnoceni_tridy.html) – načte hodnotící soubory celé třídy (i více tříd), ohodnotí je AI a výsledky exportuje do CSV.
