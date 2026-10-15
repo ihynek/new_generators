@@ -89,7 +89,7 @@ tr.main:hover{background:#f8fafc}
 <thead><tr><th>#</th><th>Student</th><th>Třída</th><th>Datum</th><th>Body</th><th>%</th><th>Známka</th><th class="noprint">Stav</th></tr></thead>
 <tbody id="tb"></tbody>
 </table>
-<p class="scale">Stupnice: 1 = 90–100 % · 2 = 75–89 % · 3 = 60–74 % · 4 = 45–59 % · 5 = 0–44 % (stejná jako v hodnotícím souboru). Max. 2 body za otázku.</p>
+<p class="scale">Stupnice: 1 = nad 89 % · 2 = 75–89 % · 3 = 55–74 % · 4 = 40–54 % · 5 = pod 40 % (stejná jako v hodnotícím souboru). Max. 2 body za otázku.</p>
 </div>
 
 <script>
@@ -107,7 +107,7 @@ var keyEl=document.getElementById('key');
 keyEl.value=lsGet('anthApiKey')||'';
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function gradeOf(p){return p>=90?1:p>=75?2:p>=60?3:p>=45?4:5}
+function gradeOf(p){return p>89?1:p>74?2:p>54?3:p>=40?4:5}
 
 // ---------- načtení souborů ----------
 var drop=document.getElementById('drop'),fi=document.getElementById('fi');
@@ -156,8 +156,8 @@ function load(files){
 function calc(s){
   var t=0,mx=s.ans.length*MAXQ;
   s.pts.forEach(function(p){t+=p||0});
-  var pct=mx?Math.round(t/mx*100):0;
-  return{t:t,mx:mx,pct:pct,g:gradeOf(pct)};
+  var raw=mx?t/mx*100:0;
+  return{t:t,mx:mx,pct:Math.round(raw),g:gradeOf(raw)};
 }
 
 // ---------- vykreslení ----------
